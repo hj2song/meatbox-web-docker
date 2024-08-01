@@ -10,7 +10,7 @@ services:
       TASK_NAME: '{{.Task.Name}}'
     ports:
       - target: 15100
-        published: 8080
+        published: 8180
         protocol: tcp
         mode: ingress
     deploy:
