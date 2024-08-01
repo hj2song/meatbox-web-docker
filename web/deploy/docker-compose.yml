@@ -52,7 +52,7 @@ services:
       - meatbox-web
     secrets:
       - source: MeatboxSecretKey
-        target: /home/DATA/www-deploy/meatbox-admin2/src/main/webapp/WEB-INF/classes/properties/MeatboxSecretKey.properties
+        target: /home/DATA/www-deploy/meatbox-web2/src/main/webapp/WEB-INF/classes/properties/MeatboxSecretKey.properties
     #entrypoint: ["sh", "-c", "entry.sh"]
     healthcheck:
       test: ["CMD", "sh", "-c", "netstat -an | grep 15100 > /dev/null; if [ 0 != $$? ]; then exit 1; fi;"]
