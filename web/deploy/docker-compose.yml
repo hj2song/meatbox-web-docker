@@ -45,7 +45,7 @@ services:
     volumes:
       # - meatbox-web-image-server-prd-162:/home/DATA/share/meatbox
       - type: bind
-        source: /home/super/docker/logs/web
+        source: /home/super/docker/logs/web-dev
         target: /usr/local/tomcat/tomcat-meatbox-web2/logs
         read_only: false
     networks:
