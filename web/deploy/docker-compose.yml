@@ -1,0 +1,79 @@
+version: "3.9"
+
+services:
+  meatbox:
+    image: ${IMAGE_FULL_NAME}
+    hostname: '{{.Service.Name}}-{{.Task.Slot}}'
+    environment:
+      NODE_HOSTNAME: '{{.Node.Hostname}}'
+      TASK_ID: '{{.Task.ID}}'
+      TASK_NAME: '{{.Task.Name}}'
+    ports:
+      - target: 17102
+        published: 8080
+        protocol: tcp
+        mode: ingress
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == worker]
+        preferences:
+          - spread: node.labels.hostname
+      labels:
+        - app=meatbox-web
+        - env=prod
+          #        - swarmpit.service.deployment.autoredeploy=true
+      resources:
+        limits:
+          cpus: "2"
+          memory: 8192M
+        reservations:
+          cpus: "1"
+          memory: 4096M
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 60s
+      update_config:
+        delay: 10s
+        order: start-first
+      rollback_config:
+        delay: 10s
+        order: start-first
+    volumes:
+      - meatbox-web-image-server-prd-162:/home/DATA/share/meatbox
+      - type: bind
+        source: /home/super/docker/logs/web
+        target: /usr/local/tomcat/tomcat-meatbox-admin2/logs
+        read_only: false
+    networks:
+      - meatbox-web
+    secrets:
+      - source: MeatboxSecretKey
+        target: /home/DATA/www-deploy/meatbox-admin2/src/main/webapp/WEB-INF/classes/properties/MeatboxSecretKey.properties
+    #entrypoint: ["sh", "-c", "entry.sh"]
+    healthcheck:
+      test: ["CMD", "sh", "-c", "netstat -an | grep 17102 > /dev/null; if [ 0 != $$? ]; then exit 1; fi;"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+networks:
+  meatbox-web:
+    driver: overlay
+
+volumes:
+  meatbox-web-image-server-prd-162:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=192.168.1.162,vers=4.2,soft
+      device: :/data/share/meatbox
+
+secrets:
+  MeatboxSecretKey:
+    external: true
+    
