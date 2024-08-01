@@ -17,7 +17,6 @@
 -->
 <!-- The contents of this file will be loaded for each web application -->
 <Context>
-
     <!-- Default set of monitored resources. If one of these changes, the    -->
     <!-- web application will be reloaded.                                   -->
     <WatchedResource>WEB-INF/web.xml</WatchedResource>
@@ -27,6 +26,5 @@
     <!--
     <Manager pathname="" />
     -->
-	<Resources allowLinking="true"></Resources>
-
+    <Resources allowLinking="true"></Resources>
 </Context>
