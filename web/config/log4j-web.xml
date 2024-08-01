@@ -5,7 +5,7 @@
 			<PatternLayout pattern="%d{yyyy/MM/dd HH:mm:ss},%5p (%C{1}.%M) : %m%n"/>
 		</Console>
 		<RollingFile name ="appender-root"
-		fileName="${sys:catalina.home}/logs/web/root.log"
+		fileName="${sys:catalina.home}/logs/${sys:HOSTNAME}/web/root.log"
 		filePattern="${sys:catalina.home}/logs/${sys:HOSTNAME}/web/root.log.%d{yyyy-MM-dd}"
 		ignoreExceptions="false">
 			<PatternLayout>
@@ -17,7 +17,7 @@
 		</RollingFile>
 		
 		<RollingFile name ="appender-allat"
-		fileName="${sys:catalina.home}/logs/web/allat.log"
+		fileName="${sys:catalina.home}/logs/${sys:HOSTNAME}/web/allat.log"
 		filePattern="${sys:catalina.home}/logs/${sys:HOSTNAME}/web/allat.log.%d{yyyy-MM-dd}"
 		ignoreExceptions="false">
 			<PatternLayout>
@@ -29,7 +29,7 @@
 		</RollingFile>
 		
 		<RollingFile name ="appender-nicepay"
-		fileName="${sys:catalina.home}/logs/web/nicepay.log"
+		fileName="${sys:catalina.home}/logs/web/${sys:HOSTNAME}/nicepay.log"
 		filePattern="${sys:catalina.home}/logs/${sys:HOSTNAME}/web/nicepay.log.%d{yyyy-MM-dd}"
 		ignoreExceptions="false">
 			<PatternLayout>
