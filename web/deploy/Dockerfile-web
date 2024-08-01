@@ -5,8 +5,8 @@ FROM nexus.meatbox.co.kr:5001/dev/base/meatbox-web:latest
 EXPOSE 17102
 
 # Tomcat 설정 파일 복사
-COPY office/tomcat/conf/. /usr/local/tomcat/tomcat-meatbox-web2/conf/
-COPY office/tomcat/bin/. $CATALINA_HOME/bin/
+COPY web/tomcat/conf/. /usr/local/tomcat/tomcat-meatbox-web2/conf/
+COPY web/tomcat/bin/. $CATALINA_HOME/bin/
 
 # 권한 설정
 RUN chmod u+x $CATALINA_HOME/bin/catalina.sh \
