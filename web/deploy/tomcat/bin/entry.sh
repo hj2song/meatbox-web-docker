@@ -1,6 +1,6 @@
 #!/bin/sh
 
-link.sh
+#link.sh
 
 trap `exitHandler` EXIT
 exitHandler() {

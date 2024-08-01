@@ -122,11 +122,11 @@ esac
 JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms2g -Xmx8g -XX:NewSize=256m -XX:MaxNewSize=256m -XX:+DisableExplicitGC"
 
 ########## APM::Pinpoint Option ##########
-export PINPOINT_AGENT_PATH=/usr/local/pinpoint/pinpoint-agent-2.0.3
+# export PINPOINT_AGENT_PATH=/usr/local/pinpoint/pinpoint-agent-2.0.3
 export JAVA_OPTS="$JAVA_OPTS -Djava.net.preferIPv4Stack=true -DHOSTNAME=\"${HOSTNAME}\""
-export JAVA_OPTS="$JAVA_OPTS -javaagent:$PINPOINT_AGENT_PATH/pinpoint-bootstrap-2.0.3.jar"
-export JAVA_OPTS="$JAVA_OPTS -Dpinpoint.agentId='$(echo $NODE_HOSTNAME | sed 's/docker-node-//')_${HOSTNAME}' -Dpinpoint.applicationName=MEATBOX_WEB"
-export CATALINA_OPTS="$CATALINA_OPTS -Denv=product -Denv.servername=PRD_MEATBOX_OFFICE"
+# export JAVA_OPTS="$JAVA_OPTS -javaagent:$PINPOINT_AGENT_PATH/pinpoint-bootstrap-2.0.3.jar"
+# export JAVA_OPTS="$JAVA_OPTS -Dpinpoint.agentId='$(echo $NODE_HOSTNAME | sed 's/docker-node-//')_${HOSTNAME}' -Dpinpoint.applicationName=MEATBOX_WEB"
+# export CATALINA_OPTS="$CATALINA_OPTS -Denv=product -Denv.servername=PRD_MEATBOX_OFFICE"
 export CATALINA_OPTS="${JMX_OPTS} ${CATALINA_OPTS}"
 ##########################################
 
