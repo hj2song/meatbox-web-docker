@@ -231,11 +231,12 @@ ompressableMimeType="text/html,text/xml,text/plain,text/javascript,text/css"
 
       <Host name="dev-www2.meatbox.co.kr"  appBase="webapps-empty"
             unpackWARs="true" autoDeploy="true" undeployOldVersions="true">
+        <Valve className="org.apache.catalina.valves.RemoteIpValve" 
+                remoteIpHeader="X-Forwarded-For" 
+                protocolHeader="X-Forwarded-Proto" />
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs/${HOSTNAME}"
-               prefix="meatbox-web2_access_log." suffix=".txt"
-               remoteIpHeader="X-Forwarded-For" 
-               protocolHeader="X-Forwarded-Proto"
-               pattern="%{org.apache.catalina.AccessLog.RemoteAddr}r %l %u %t &quot;%r&quot; %s %b" />
+                prefix="meatbox-web2_access_log." suffix=".txt"
+                pattern="%{org.apache.catalina.AccessLog.RemoteAddr}r %l %u %t &quot;%r&quot; %s %b" />
       </Host>
 
     </Engine>
