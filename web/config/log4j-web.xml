@@ -6,7 +6,7 @@
 		</Console>
 		<RollingFile name ="appender-root"
 		fileName="${sys:catalina.home}/logs/web/root.log"
-		filePattern="${sys:catalina.home}/logs/${HOSTNAME}/web/root.log.%d{yyyy-MM-dd}"
+		filePattern="${sys:catalina.home}/logs/${sys:HOSTNAME}/web/root.log.%d{yyyy-MM-dd}"
 		ignoreExceptions="false">
 			<PatternLayout>
 				<Pattern>%d{yyyy/MM/dd HH:mm:ss},%5p (%C{1}.%M) : %m%n</Pattern>
@@ -18,7 +18,7 @@
 		
 		<RollingFile name ="appender-allat"
 		fileName="${sys:catalina.home}/logs/web/allat.log"
-		filePattern="${sys:catalina.home}/logs/${HOSTNAME}/web/allat.log.%d{yyyy-MM-dd}"
+		filePattern="${sys:catalina.home}/logs/${sys:HOSTNAME}/web/allat.log.%d{yyyy-MM-dd}"
 		ignoreExceptions="false">
 			<PatternLayout>
 				<Pattern>%d{yyyy/MM/dd HH:mm:ss},%5p (%C{1}.%M) : %m%n</Pattern>
@@ -30,7 +30,7 @@
 		
 		<RollingFile name ="appender-nicepay"
 		fileName="${sys:catalina.home}/logs/web/nicepay.log"
-		filePattern="${sys:catalina.home}/logs/${HOSTNAME}/web/nicepay.log.%d{yyyy-MM-dd}"
+		filePattern="${sys:catalina.home}/logs/${sys:HOSTNAME}/web/nicepay.log.%d{yyyy-MM-dd}"
 		ignoreExceptions="false">
 			<PatternLayout>
 				<Pattern>%d{yyyy/MM/dd HH:mm:ss},%5p (%C{1}.%M) : %m%n</Pattern>
