@@ -1,24 +1,24 @@
 #!/bin/bash
-export JAVA_HOME=/usr/local/java/java-se-7u75-ri
+export JAVA_HOME=/usr/local/java/java-1.8.0-openjdk
 export ANT_HOME=/usr/local/apache-ant-1.9.16
 export PATH=$PATH:$JAVA_HOME/bin:$ANT_HOME/bin
 
 GIT_TAG=$1
 GITHUB_USERNAME=meatbox-git
 GITHUB_TOKEN=$2
-REPO_URL="https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/meatbox-git/meatbox-admin.git"
+REPO_URL="https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/meatbox-git/meatbox-web.git"
 
-ENV=prod
-APP_NAME=office
+ENV=dev
+APP_NAME=web
 WORKDIR=/home/super/docker
 DEPLOY_PATH=${WORKDIR}/meatbox-${APP_NAME}-${ENV}
-SOURCE_PATH=${WORKDIR}/meatbox-admin
+SOURCE_PATH=${WORKDIR}/meatbox-${APP_NAME}
 DOCKER_PATH=${WORKDIR}/meatbox-${APP_NAME}-docker
 LIBRARY_PATH=${DEPLOY_PATH}/src/main/webapp/WEB-INF/lib
 RESOURCE_PATH=${DEPLOY_PATH}/src/main/resources/properties
-PROPERTY_PATH=${DEPLOY_PATH}/src/main/properties/${ENV}
+LOG4J_PATH=${DEPLOY_PATH}/src/main/resources/log4j
 IMAGE_REPO="nexus.meatbox.co.kr/${ENV}/meatbox"
-IMAGE_NAME="office"
+IMAGE_NAME="web"
 
 # 깃 태그 이름과 토큰이 제공되지 않았을 경우 오류 메시지를 출력하고 종료합니다.
 if [ -z "${GIT_TAG}" ] || [ -z "${GITHUB_TOKEN}" ]; then
@@ -52,16 +52,15 @@ rm -rf ${LIBRARY_PATH}/icu4j-4.0.1.jar
 echo "배포날짜: $(TZ='Asia/Seoul' date +"%Y-%m-%d %H:%M:%S.%3N")" > ${RESOURCE_PATH}/deploy-date.txt
 
 # 설정 파일 교체
-sed -i 's|\${catalina.home}/logs|&/${HOSTNAME}|g' ${PROPERTY_PATH}/logback.xml || exit
+# sed -i 's|\${catalina.home}/logs|&/${HOSTNAME}|g' ${LOG4J_PATH}/logback.xml || exit
+cp -r  ${DOCKER_PATH}/${IMAGE_NAME}/config/log4j-web.xml ${LOG4J_PATH}/log4j-web\($(echo ${ENV} | tr [:lower:] [:upper:])\).xml
 
 # Docker Build에 필요한 파일을 DEPLOY 경로로 이동
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/tomcat ${DEPLOY_PATH}/tomcat || exit
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/build-local.xml ${DEPLOY_PATH}/build.xml || exit
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/Dockerfile-${APP_NAME}-local ${DEPLOY_PATH}/Dockerfile-${APP_NAME}-local || exit
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/.dockerignore ${DEPLOY_PATH}/.dockerignore || exit
-cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/const\(RELEASE-DOCKER\).xml ${RESOURCE_PATH}/const\(RELEASE-DOCKER\).xml || exit
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/docker-compose.yml ${DEPLOY_PATH}/docker-compose.yml || exit
-cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/managerview.png ${DEPLOY_PATH}/src/main/webapp/img/demo/managerview.png || exit
 
 # Ant 빌드
 ant -f ${DEPLOY_PATH}/build.xml dist || exit

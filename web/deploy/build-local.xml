@@ -1,4 +1,4 @@
-<project name="meatbox-web" default="dist" basedir="/home/super/docker/meatbox-web-prod">
+<project name="meatbox-web" default="dist" basedir="/home/super/docker/meatbox-web-dev">
 
 	<property name="src"		location="src/main/java"/>
 	<property name="resources"	location="src/main/resources"/>
@@ -30,12 +30,15 @@
 			<fileset dir="${resources}">
 				<include name="**/*"/>
 			</fileset>
+			<fileset dir="${template}">
+				<include name="**/*"/>
+			</fileset>
 		</copy>
-		<copy file="${build}/log4j/log4j-web(RELEASE).xml"					tofile="${build}/log4j/log4j-web.xml"				overwrite="true" />
-		<copy file="${build}/properties/const(RELEASE).xml"					tofile="${build}/properties/const.xml"				overwrite="true" />
-		<copy file="${build}/properties/const_search(RELEASE).xml" 			tofile="${build}/properties/const_search.xml"		overwrite="true" />
-		<copy file="${build}/properties/const_nice_pay(RELEASE).xml"		tofile="${build}/properties/const_nice_pay.xml"		overwrite="true" />
-		<copy file="${build}/spring/context-scheduler(RELEASE).xml" 		tofile="${build}/spring/context-scheduler.xml"		overwrite="true" />
+		<copy file="${build}/log4j/log4j-web(DEV).xml"					tofile="${build}/log4j/log4j-web.xml"				overwrite="true" />
+		<copy file="${build}/properties/const(DEV).xml"					tofile="${build}/properties/const.xml"				overwrite="true" />
+		<copy file="${build}/properties/const_search(DEV).xml" 			tofile="${build}/properties/const_search.xml"		overwrite="true" />
+		<copy file="${build}/properties/const_nice_pay(DEV).xml"		tofile="${build}/properties/const_nice_pay.xml"		overwrite="true" />
+		<copy file="${build}/spring/context-scheduler(DEV).xml" 		tofile="${build}/spring/context-scheduler.xml"		overwrite="true" />
 	</target>
 
 	<target name="dist" depends="clean, compile, copyResource" description="clean up" ></target>
@@ -44,4 +47,3 @@
 		<delete dir="${build}"/>
 	</target>
 </project>
-
