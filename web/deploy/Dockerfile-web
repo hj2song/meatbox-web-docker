@@ -1,5 +1,5 @@
 # Base Image
-FROM nexus.meatbox.co.kr:5001/prod/base/jdk1.8_tomcat7.0.69:latest
+FROM nexus.meatbox.co.kr:5001/dev/base/meatbox-web:latest
 
 # 포트 설정
 EXPOSE 17102
