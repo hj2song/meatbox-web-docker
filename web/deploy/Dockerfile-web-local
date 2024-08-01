@@ -7,7 +7,7 @@ EXPOSE 15100
 # Tomcat 설정 파일 복사
 COPY tomcat/conf/. /usr/local/tomcat/tomcat-meatbox-web2/conf/ 
 COPY tomcat/bin/. $CATALINA_HOME/bin/
-COPY 30.\ 어플/. /home/DATA/www-deploy/meatbox-web2/src/main/webapp/
+COPY "30.\ 어플/". /home/DATA/www-deploy/meatbox-web2/src/main/webapp/
 
 # 권한 설정
 RUN chmod u+x $CATALINA_HOME/bin/catalina.sh \
