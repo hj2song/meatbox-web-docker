@@ -16,13 +16,13 @@ public class MeatboxApplicationRunner implements ApplicationListener<ContextRefr
     @SneakyThrows
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        // if (StringUtils.isNotEmpty(Const.LOCATION)
-        //     && Const.LOCATION_RELEASE.equals(Const.LOCATION)) {
-        //     Map<String, Object> params = new HashMap<>();
-        //     params.put("IP", InetAddress.getLocalHost().getHostAddress());
-        //     params.put("Prop", Const.LOCATION);
-        //     params.put("Sevice", serviceName);
-        //     SlackTool.sendDeployMessage(params,"#deploy");
-        // }
+        if (StringUtils.isNotEmpty(Const.LOCATION)
+            && Const.LOCATION_RELEASE.equals(Const.LOCATION)) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("IP", InetAddress.getLocalHost().getHostAddress());
+            params.put("Prop", Const.LOCATION);
+            params.put("Sevice", serviceName);
+            //SlackTool.sendDeployMessage(params,"#deploy");
+        }
     }
 }
