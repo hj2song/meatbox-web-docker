@@ -199,6 +199,7 @@
 		redirectPort="17200"
 		maxCookieCount="2000"
 		packetSize="65536"
+          secretRequired="false"
     />
 
 
