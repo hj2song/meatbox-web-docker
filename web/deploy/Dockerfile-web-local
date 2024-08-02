@@ -1,25 +1,26 @@
 # Base Image
-FROM nexus.meatbox.co.kr/prod/base/jdk1.8_tomcat7.0.69:latest
+FROM nexus.meatbox.co.kr/prod/base/meatbox-web:latest
 
 # 포트 설정
-EXPOSE 17102
-
-# Tomcat 설정 파일 복사
-COPY tomcat/conf/. /usr/local/tomcat/tomcat-meatbox-admin2/conf/ 
-COPY tomcat/bin/. $CATALINA_HOME/bin/
+EXPOSE 17100
 
 # 권한 설정
 RUN chmod u+x $CATALINA_HOME/bin/catalina.sh \
     # 이미지 서버 마운트 경로 생성
-    && mkdir -p /home/DATA/share/fc /home/DATA/share/meatbox /home/DATA/share/ddshop /home/DATA/www-deploy/meatbox-admin2/src/main/webapp/m /home/DATA/www-deploy/meatbox-admin2/src/main/webapp/web \
+    && mkdir -p /home/DATA/www-deploy/meatbox-web2/src/main/webapp/m /home/DATA/www-deploy/meatbox-web2/src/main/webapp/web \
     # 디렉토리 소유권 설정
-    && chown www:www -R /home/DATA/ /usr/local/tomcat/ /usr/lib/jvm /usr/local/pinpoint/
+    && chown www:www -R /home/DATA/ /usr/local/tomcat/ /usr/lib/jvm
 
 # 사용자 변경
 USER www
 
+# Tomcat 설정 파일 복사
+COPY --chown=www tomcat/conf/. /usr/local/tomcat/tomcat-meatbox-web2/conf/ 
+COPY --chown=www tomcat/bin/. $CATALINA_HOME/bin/
+
 # 애플리케이션 배포
-COPY --chown=www src/main/webapp/. /home/DATA/www-deploy/meatbox-admin2/src/main/webapp/
+#COPY --chown=www ["30. 어플/.", "/home/DATA/www-deploy/meatbox-web2/src/main/webapp/"]
+COPY --chown=www src/main/webapp/. /home/DATA/www-deploy/meatbox-web2/src/main/webapp/
 
 # Tomcat 서버 실행
 ENTRYPOINT ["sh", "-c", "entry.sh"]

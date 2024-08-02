@@ -9,13 +9,13 @@ services:
       TASK_ID: '{{.Task.ID}}'
       TASK_NAME: '{{.Task.Name}}'
     ports:
-      - target: 17102
-        published: 8080
+      - target: 17100
+        published: 8180
         protocol: tcp
         mode: ingress
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 2
       placement:
         constraints: [node.role == worker]
         preferences:
@@ -23,7 +23,7 @@ services:
       labels:
         - app=meatbox-web
         - env=prod
-          #        - swarmpit.service.deployment.autoredeploy=true
+        - swarmpit.service.deployment.autoredeploy=true
       resources:
         limits:
           cpus: "2"
@@ -46,16 +46,16 @@ services:
       - meatbox-web-image-server-prd-162:/home/DATA/share/meatbox
       - type: bind
         source: /home/super/docker/logs/web
-        target: /usr/local/tomcat/tomcat-meatbox-admin2/logs
+        target: /usr/local/tomcat/tomcat-meatbox-web2/logs
         read_only: false
     networks:
       - meatbox-web
     secrets:
       - source: MeatboxSecretKey
-        target: /home/DATA/www-deploy/meatbox-admin2/src/main/webapp/WEB-INF/classes/properties/MeatboxSecretKey.properties
+        target: /home/DATA/www-deploy/meatbox-web2/src/main/webapp/WEB-INF/classes/properties/MeatboxSecretKey.properties
     #entrypoint: ["sh", "-c", "entry.sh"]
     healthcheck:
-      test: ["CMD", "sh", "-c", "netstat -an | grep 17102 > /dev/null; if [ 0 != $$? ]; then exit 1; fi;"]
+      test: ["CMD", "sh", "-c", "netstat -an | grep 17100 > /dev/null; if [ 0 != $$? ]; then exit 1; fi;"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -76,4 +76,3 @@ volumes:
 secrets:
   MeatboxSecretKey:
     external: true
-    
