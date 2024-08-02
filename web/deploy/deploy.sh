@@ -3,11 +3,6 @@ export JAVA_HOME=/usr/local/java/java-1.8.0-openjdk
 export ANT_HOME=/usr/local/apache-ant-1.9.16
 export PATH=$PATH:$JAVA_HOME/bin:$ANT_HOME/bin
 
-GIT_TAG=$1
-GITHUB_USERNAME=meatbox-git
-GITHUB_TOKEN=$2
-REPO_URL="https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/meatbox-git/meatbox-web.git"
-
 ENV=prod
 APP_NAME=web
 WORKDIR=/home/super/docker
@@ -19,6 +14,11 @@ RESOURCE_PATH=${DEPLOY_PATH}/src/main/resources/properties
 LOG4J_PATH=${DEPLOY_PATH}/src/main/resources/log4j
 IMAGE_REPO="nexus.meatbox.co.kr/${ENV}/meatbox"
 IMAGE_NAME="web"
+
+GIT_TAG=$1
+GITHUB_USERNAME=meatbox-git
+GITHUB_TOKEN=$2
+REPO_URL="https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/meatbox-git/meatbox-${APP_NAME}.git"
 
 # 깃 태그 이름과 토큰이 제공되지 않았을 경우 오류 메시지를 출력하고 종료합니다.
 if [ -z "${GIT_TAG}" ] || [ -z "${GITHUB_TOKEN}" ]; then
@@ -50,7 +50,7 @@ cp -r  ${DOCKER_PATH}/${APP_NAME}/lib/icu4j-50.1.1.jar ${LIBRARY_PATH}/icu4j-50.
 rm -rf ${LIBRARY_PATH}/icu4j-4.0.1.jar
 
 # 슬랙 알림 비 활성화
-cp -rp ${DOCKER_PATH}/web/deploy/MeatboxApplicationRunner.java ${DEPLOY_PATH}/src/main/java/kr/gbnet/common/listener/MeatboxApplicationRunner.java || exit
+cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/MeatboxApplicationRunner.java ${DEPLOY_PATH}/src/main/java/kr/gbnet/common/listener/MeatboxApplicationRunner.java || exit
 
 # swarmpit 사용을 위한 의도적으로 파일 추가하여 docker image layer 변경점 추가
 echo "배포날짜: $(TZ='Asia/Seoul' date +"%Y-%m-%d %H:%M:%S.%3N")" > ${RESOURCE_PATH}/deploy-date.txt
