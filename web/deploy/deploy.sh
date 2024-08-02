@@ -65,6 +65,9 @@ cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/Dockerfile-${APP_NAME}-local ${DEPLOY_P
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/.dockerignore ${DEPLOY_PATH}/.dockerignore || exit
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/docker-compose.yml ${DEPLOY_PATH}/docker-compose.yml || exit
 
+# 도메인 변경
+find ${DEPLOY_PATH} -type f -exec sed -i 's/www\.meatbox\.co\.kr/www2\.meatbox\.co\.kr/g' {} +
+
 # Ant 빌드
 ant -f ${DEPLOY_PATH}/build.xml dist || exit
 
