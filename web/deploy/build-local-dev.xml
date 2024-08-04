@@ -1,4 +1,4 @@
-<project name="meatbox-web" default="dist" basedir="/home/super/docker/meatbox-web-prod">
+<project name="meatbox-web" default="dist" basedir="/home/super/docker/meatbox-web-dev">
 
 	<property name="src"		location="src/main/java"/>
 	<property name="resources"	location="src/main/resources"/>
