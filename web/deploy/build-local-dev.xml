@@ -1,0 +1,50 @@
+<project name="meatbox-web" default="dist" basedir="/home/super/docker/meatbox-web-prod">
+
+	<property name="src"		location="src/main/java"/>
+	<property name="resources"	location="src/main/resources"/>
+	<property name="template"	location="src/main/template"/>
+	<property name="build"		location="src/main/webapp/WEB-INF/classes"/>
+
+	<target name="init">
+		<tstamp/>
+		<mkdir dir="${build}"/>
+	</target>
+
+	<target name="compile" depends="init" description="compile the source " >
+		<javac srcdir="${src}" destdir="${build}" fork="yes" executable="/usr/local/java/java-1.8.0-openjdk/bin/javac" compiler="javac1.8" debug="true">
+			<classpath>
+				<pathelement path="${classpath}"/>
+				<fileset dir="src/main/webapp/WEB-INF/lib">
+					<include name="**/*.jar"/>
+				</fileset>
+				<fileset dir="10. reference/tomcat-8.5.14/lib">
+					<include name="**/*.jar"/>
+				</fileset>
+				<pathelement location="src/main/webapp/WEB-INF/classes"/>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="copyResource">
+		<copy todir="${build}">
+			<fileset dir="${resources}">
+				<include name="**/*"/>
+			</fileset>
+			<fileset dir="${template}">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+		<copy file="${build}/log4j/log4j-web(DEV).xml"					tofile="${build}/log4j/log4j-web.xml"				overwrite="true" />
+		<copy file="${build}/properties/const(DEV).xml"					tofile="${build}/properties/const.xml"				overwrite="true" />
+		<copy file="${build}/properties/const_search(DEV).xml" 			tofile="${build}/properties/const_search.xml"		overwrite="true" />
+		<copy file="${build}/properties/const_nice_pay(DEV).xml"		tofile="${build}/properties/const_nice_pay.xml"		overwrite="true" />
+		<copy file="${build}/spring/context-scheduler(DEV).xml" 		tofile="${build}/spring/context-scheduler.xml"		overwrite="true" />
+	</target>
+
+	<target name="dist" depends="clean, compile, copyResource" description="clean up" ></target>
+
+	<target name="clean" description="clean up" >
+		<delete dir="${build}"/>
+	</target>
+</project>
+

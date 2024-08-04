@@ -22,7 +22,7 @@ services:
           - spread: node.labels.hostname
       labels:
         - app=meatbox-web
-        - env=prod
+        - env=dev
         - swarmpit.service.deployment.autoredeploy=true
       resources:
         limits:
@@ -43,7 +43,7 @@ services:
         delay: 10s
         order: start-first
     volumes:
-      - meatbox-web-image-server-prod-162:/home/DATA/share/meatbox
+      - meatbox-web-image-server-dev-50:/home/DATA/share/meatbox
       - type: bind
         source: /home/super/docker/logs/web
         target: /usr/local/tomcat/tomcat-meatbox-web2/logs
@@ -66,11 +66,11 @@ networks:
     driver: overlay
 
 volumes:
-  meatbox-web-image-server-prod-162:
+  meatbox-web-image-server-dev-50:
     driver: local
     driver_opts:
       type: nfs
-      o: addr=192.168.1.162,vers=4.2,soft
+      o: addr=192.168.2.50,vers=4.2,soft
       device: :/data/share/meatbox
 
 secrets:

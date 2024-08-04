@@ -3,7 +3,7 @@ export JAVA_HOME=/usr/local/java/java-1.8.0-openjdk
 export ANT_HOME=/usr/local/apache-ant-1.9.16
 export PATH=$PATH:$JAVA_HOME/bin:$ANT_HOME/bin
 
-ENV=prod
+ENV=dev
 APP_NAME=web
 WORKDIR=/home/super/docker
 DEPLOY_PATH=${WORKDIR}/meatbox-${APP_NAME}-${ENV}
@@ -56,11 +56,11 @@ cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/MeatboxApplicationRunner.java ${DEPLOY_
 echo "배포날짜: $(TZ='Asia/Seoul' date +"%Y-%m-%d %H:%M:%S.%3N")" > ${RESOURCE_PATH}/deploy-date.txt
 
 # 설정 파일 교체
-sed -i 's|\${sys:catalina.home}/logs|\${sys:catalina.home}/logs/\${sys:HOSTNAME}|g' ${LOG4J_PATH}/log4j-web\(RELEASE\).xml || exit
+sed -i 's|\${sys:catalina.home}/logs|\${sys:catalina.home}/logs/\${sys:HOSTNAME}|g' ${LOG4J_PATH}/log4j-web\(DEV\).xml || exit
 
 # Docker Build에 필요한 파일을 DEPLOY 경로로 이동
-cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/tomcat ${DEPLOY_PATH}/tomcat || exit
-cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/build-local.xml ${DEPLOY_PATH}/build.xml || exit
+cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/tomcat-dev ${DEPLOY_PATH}/tomcat || exit
+cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/build-local-dev.xml ${DEPLOY_PATH}/build.xml || exit
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/Dockerfile-${APP_NAME}-local ${DEPLOY_PATH}/Dockerfile-${APP_NAME}-local || exit
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/.dockerignore ${DEPLOY_PATH}/.dockerignore || exit
 
