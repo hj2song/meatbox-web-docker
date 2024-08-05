@@ -66,6 +66,7 @@ cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/.dockerignore ${DEPLOY_PATH}/.dockerign
 
 # 도메인 변경
 find ${DEPLOY_PATH} -type f -exec sed -i 's/www\.meatbox\.co\.kr/www5\.meatbox\.co\.kr/g' {} +
+find ${DEPLOY_PATH} -type f -exec sed -i 's/dev-www2\.meatbox\.co\.kr/www5\.meatbox\.co\.kr/g' {} +
 
 # Ant 빌드
 ant -f ${DEPLOY_PATH}/build.xml dist || exit
