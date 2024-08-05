@@ -11,7 +11,7 @@
 	</target>
 
 	<target name="compile" depends="init" description="compile the source " >
-		<javac srcdir="${src}" destdir="${build}" fork="yes" executable="/home/runner/work/meatbox-office-docker/meatbox-office-docker/docker/java-1.8.0-openjdk/bin/javac" compiler="javac1.8" debug="true">
+		<javac srcdir="${src}" destdir="${build}" fork="yes" executable="/home/runner/work/meatbox-web-docker/meatbox-web-docker/docker/java-1.8.0-openjdk/bin/javac" compiler="javac1.8" debug="true">
 			<classpath>
 				<pathelement path="${classpath}"/>
 				<fileset dir="src/main/webapp/WEB-INF/lib">
