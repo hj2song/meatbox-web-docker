@@ -95,15 +95,14 @@ jobs:
         platforms: linux/amd64
         tags: |
           ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }}
-          ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
         cache-from: type=gha # gha 는 Guthub Actions 용 캐시를 의미
         cache-to: type=gha,mode=max
     # 이미지 태깅 & Push
     - name: image Tag and Push
       run: |
+        docker tag ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }} ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
         docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }}
-        docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest 
-      #  docker tag ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }} ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
+        docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
 
 
 # NEXUS_PASSWORD=
