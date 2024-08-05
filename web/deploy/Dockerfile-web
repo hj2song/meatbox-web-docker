@@ -15,8 +15,9 @@ RUN chmod u+x $CATALINA_HOME/bin/catalina.sh \
 USER www
 
 # Tomcat 설정 파일 복사
-COPY --chown=www tomcat/bin/. $CATALINA_HOME/bin/ \
-                 tomcat/conf/. $CATALINA_HOME//tomcat/
+COPY --chown=www tomcat/conf/. $CATALINA_HOME/conf/ 
+COPY --chown=www tomcat/bin/. $CATALINA_HOME/bin/
+
 # 애플리케이션 배포
 COPY --chown=www web/src/main/webapp/. /home/DATA/www-deploy/meatbox-web2/src/main/webapp/
 
