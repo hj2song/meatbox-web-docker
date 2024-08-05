@@ -77,17 +77,38 @@ jobs:
     - name: ant build
       run: ant -f web/build.xml dist
 
+    # Docker Image 캐시를 위한 설정
+    - name: Cache Docker layers
+      uses: actions/cache@v2
+      with:
+        path: /tmp/.buildx-cache  # 캐시 경로
+        key: ${{ runner.os }}-buildx-${{ github.sha }}  # 캐시 키
+        restore-keys: |
+          ${{ runner.os }}-buildx-
+
     # WEB 앱 이미지 빌드
     - name: app image build
       run: docker build -t ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }} -f web/Dockerfile-web .
 
     # 이미지 태깅 & Push
-    - name: image Tag and Push
-      run: |
-        docker tag ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }} ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
-        docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }}
-        docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest 
- 
+    # - name: image Tag and Push
+    #   run: |
+    #     docker tag ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }} ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
+    #     docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }}
+    #     docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest 
+    # WEB 앱 이미지 빌드 및 푸시
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        context: .  # Dockerfile이 위치한 디렉토리
+        file: web/Dockerfile-web  # 사용할 Dockerfile
+        push: true  # 이미지를 푸시할지 여부
+        tags: |
+          ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }}
+          ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
+        cache-from: type=gha # 여기서 gha 는 Guthub Actions 용 캐시를 의미합니다.
+        cache-to: type=gha,mode=max
+
 # NEXUS_PASSWORD=
 # NEXUS_REGISTRY=nexus.meatbox.co.kr:5001
 # NEXUS_USERNAME=admin
