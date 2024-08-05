@@ -91,8 +91,9 @@ jobs:
       with:
         context: .
         file: web/Dockerfile-web  # 사용할 Dockerfile
-        push: false  # 이미지 푸시 여부
+        push: false  # 이미지 푸시 여부를 true로 설정할 경우 swarmpit에서 이미지 인식 불가
         load: true
+        platforms: linux/amd64
         tags: |
           ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }}
           ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
