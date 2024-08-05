@@ -1,51 +1,47 @@
-<project name="meatbox-office" default="dist" basedir="/home/runner/work/meatbox-office-docker/meatbox-office-docker/office">
-	<property name="executable.javac"	value="/home/runner/work/meatbox-docker/meatbox-docker/docker/java-se-7u75-ri/bin/javac"/>
-	<property name="version.javac"		value="javac1.7"/>
-	<property name="src"			location="src/main/java"/>
-	<property name="resources"		location="src/main/resources"/>
-	<property name="properties"		location="src/main/properties/prod"/>
-	<property name="build"			location="src/main/webapp/WEB-INF/classes"/>
-	<property name="web_inf"		location="src/main/webapp/WEB-INF"/>
-	<property name="batch_web"		location="src/main/withBatch"/>
-	<!--
-	<property name="no_batch_web"	location="src/main/withoutBatch"/>
-	-->
+<project name="meatbox-web" default="dist" basedir="/home/runner/work/meatbox-web-docker/meatbox-web-docker/web">
+
+	<property name="src"		location="src/main/java"/>
+	<property name="resources"	location="src/main/resources"/>
+	<property name="template"	location="src/main/template"/>
+	<property name="build"		location="src/main/webapp/WEB-INF/classes"/>
+
 	<target name="init">
 		<tstamp/>
 		<mkdir dir="${build}"/>
 	</target>
+
 	<target name="compile" depends="init" description="compile the source " >
-		<!-- 반드시 로컬 pc에 설치된 java 1.7의 경로로 executable의 값을 설정합니다. -->
-		<javac srcdir="${src}" destdir="${build}" fork="yes" executable="/home/runner/work/meatbox-office-docker/meatbox-office-docker/docker/java-se-7u75-ri/bin/javac" compiler="javac1.7" debug="true">
+		<javac srcdir="${src}" destdir="${build}" fork="yes" executable="/home/runner/work/meatbox-office-docker/meatbox-office-docker/docker/java-1.8.0-openjdk/bin/javac" compiler="javac1.8" debug="true">
 			<classpath>
 				<pathelement path="${classpath}"/>
 				<fileset dir="src/main/webapp/WEB-INF/lib">
 					<include name="**/*.jar"/>
 				</fileset>
-				<fileset dir="10. reference/tomcat-7.0.69/lib">
+				<fileset dir="10. reference/tomcat-8.5.14/lib">
 					<include name="**/*.jar"/>
 				</fileset>
 				<pathelement location="src/main/webapp/WEB-INF/classes"/>
 			</classpath>
 		</javac>
 	</target>
+
 	<target name="copyResource">
 		<copy todir="${build}">
 			<fileset dir="${resources}">
 				<include name="**/*"/>
 			</fileset>
 		</copy>
-		<copy todir="${build}">
-			<fileset dir="${properties}">
-				<include name="**/*"/>
-			</fileset>
-		</copy>
-		<copy file="${build}/properties/const(RELEASE-DOCKER).xml"				tofile="${build}/properties/const.xml"				overwrite="true" />
-		<copy file="${build}/properties/const_nice_pay(RELEASE).xml"	tofile="${build}/properties/const_nice_pay.xml"		overwrite="true" />
-		<copy file="${build}/root/redis-context(RELEASE).xml"			tofile="${build}/root/redis-context.xml"			overwrite="true" />
+		<copy file="${build}/log4j/log4j-web(RELEASE).xml"					tofile="${build}/log4j/log4j-web.xml"				overwrite="true" />
+		<copy file="${build}/properties/const(RELEASE).xml"					tofile="${build}/properties/const.xml"				overwrite="true" />
+		<copy file="${build}/properties/const_search(RELEASE).xml" 			tofile="${build}/properties/const_search.xml"		overwrite="true" />
+		<copy file="${build}/properties/const_nice_pay(RELEASE).xml"		tofile="${build}/properties/const_nice_pay.xml"		overwrite="true" />
+		<copy file="${build}/spring/context-scheduler(RELEASE).xml" 		tofile="${build}/spring/context-scheduler.xml"		overwrite="true" />
 	</target>
+
 	<target name="dist" depends="clean, compile, copyResource" description="clean up" ></target>
+
 	<target name="clean" description="clean up" >
 		<delete dir="${build}"/>
 	</target>
 </project>
+

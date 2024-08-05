@@ -21,7 +21,7 @@ jobs:
     steps:
     - uses: oprypin/find-latest-tag@v1
       with:
-        repository: meatbox-git/meatbox-admin  # The repository to scan.
+        repository: meatbox-git/meatbox-web  # The repository to scan.
         releases-only: true  # We know that all relevant tags have a GitHub release for them.
         token: ${{ secrets.ACCESS_TOKEN }}
       id: tag_name  # The step ID to refer to later.
@@ -43,8 +43,8 @@ jobs:
     - name: Checkout other repository
       uses: actions/checkout@v3
       with:
-        repository: meatbox-git/meatbox-admin
-        path: docs
+        repository: meatbox-git/meatbox-web
+        path: web
         token: ${{ secrets.ACCESS_TOKEN }}
         ref: 'master'
 
@@ -57,30 +57,28 @@ jobs:
         password: ${{ secrets.NEXUS_PASSWORD }}
 
     # 슬랙 알림 비 활성화
-    # - name: slack alert off
-    #   run : cp -r ${{ secrets.DOCKER_PATH }}/deploy/MeatboxApplicationRunner.java ${{ secrets.DOCS_PATH }}/java/kr/gbnet/common/listener/MeatboxApplicationRunner.java
+    - name: slack alert off
+      run : cp -r ${{ secrets.DOCKER_PATH }}/deploy/MeatboxApplicationRunner.java ${{ secrets.WEB_PATH }}/java/kr/gbnet/common/listener/MeatboxApplicationRunner.java
         
     # 라이브러리 버전 교체
     - name: library change
       run: |
-        cp -rp ${{ secrets.DOCKER_PATH }}/lib/icu4j-50.1.1.jar ${{ secrets.DOCS_PATH }}/webapp/WEB-INF/lib/icu4j-50.1.1.jar
-        rm -rf ${{ secrets.DOCS_PATH }}/webapp/WEB-INF/lib/icu4j-4.0.1.jar
+        cp -rp ${{ secrets.DOCKER_PATH }}/lib/icu4j-50.1.1.jar ${{ secrets.WEB_PATH }}/webapp/WEB-INF/lib/icu4j-50.1.1.jar
+        rm -rf ${{ secrets.WEB_PATH }}/webapp/WEB-INF/lib/icu4j-4.0.1.jar
 
     # Docker Build에 필요한 파일을 DEPLOY 경로로 이동
     - name: move deploy file
       run: |
-        cp -rp ${{ secrets.DOCKER_PATH }}/deploy/tomcat docs/tomcat
-        cp -rp ${{ secrets.DOCKER_PATH }}/deploy/build.xml docs/build.xml
-        cp -rp ${{ secrets.DOCKER_PATH }}/deploy/Dockerfile-docs docs/Dockerfile-docs
-        cp -rp ${{ secrets.DOCKER_PATH }}/deploy/.dockerignore docs/.dockerignore
-        cp -rp ${{ secrets.DOCKER_PATH }}/deploy/const\(RELEASE-DOCKER\).xml ${{ secrets.DOCS_PATH }}/resources/properties
-        cp -rp ${{ secrets.DOCKER_PATH }}/deploy/managerview.png ${{ secrets.DOCS_PATH }}/webapp/img/demo/managerview.png
-        sed -i 's|\${catalina.home}/logs|&/${HOSTNAME}|g' ${{ secrets.DOCS_PATH }}/properties/prod/logback.xml
+        cp -rp ${{ secrets.DOCKER_PATH }}/deploy/tomcat web/tomcat
+        cp -rp ${{ secrets.DOCKER_PATH }}/deploy/build.xml web/build.xml
+        cp -rp ${{ secrets.DOCKER_PATH }}/deploy/Dockerfile-web web/Dockerfile-web
+        cp -rp ${{ secrets.DOCKER_PATH }}/deploy/.dockerignore web/.dockerignore
+        sed -i 's|\${sys:catalina.home}/logs|\${sys:catalina.home}/logs/\${sys:HOSTNAME}|g' web/src/main/resources/log4j/log4j-web\(RELEASE\).xml || exit
 
     #  swarmpit 사용을 위한 의도적으로 파일 추가하여 docker image layer 변경점 추가
     - name: container layer change
       run: |
-        echo "배포날짜: $(TZ='Asia/Seoul' date +"%Y-%m-%d %H:%M:%S.%3N")" > ${{ secrets.DOCS_PATH }}/resources/properties/deploy-date.txt
+        echo "배포날짜: $(TZ='Asia/Seoul' date +"%Y-%m-%d %H:%M:%S.%3N")" > ${{ secrets.WEB_PATH }}/resources/properties/deploy-date.txt
 
     # Ant 빌드
     - name: ant build
@@ -88,17 +86,17 @@ jobs:
 
     # DOCS 앱 이미지 빌드
     - name: app image build
-      run: docker build -t ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/docs:${{ env.IMAGE_TAG }} -f docs/Dockerfile-docs .
+      run: docker build -t ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }} -f docs/Dockerfile-web .
 
     # 이미지 태깅 & Push
     - name: image Tag and Push
       run: |
-        docker tag ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/docs:${{ env.IMAGE_TAG }} ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/docs:latest
-        docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/docs:${{ env.IMAGE_TAG }}
-        docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/docs:latest 
+        docker tag ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }} ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
+        docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }}
+        docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest 
  
 # NEXUS_PASSWORD=
 # NEXUS_REGISTRY=nexus.meatbox.co.kr:5001
 # NEXUS_USERNAME=admin
-# DOCKER_PATH=docker/docs
-# DOCS_PATH=docs/src/main
+# DOCKER_PATH=docker/web
+# WEB_PATH=docs/src/main

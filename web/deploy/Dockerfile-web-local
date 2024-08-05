@@ -19,7 +19,6 @@ COPY --chown=www tomcat/conf/. /usr/local/tomcat/tomcat-meatbox-web2/conf/
 COPY --chown=www tomcat/bin/. $CATALINA_HOME/bin/
 
 # 애플리케이션 배포
-#COPY --chown=www ["30. 어플/.", "/home/DATA/www-deploy/meatbox-web2/src/main/webapp/"]
 COPY --chown=www src/main/webapp/. /home/DATA/www-deploy/meatbox-web2/src/main/webapp/
 
 # Tomcat 서버 실행
