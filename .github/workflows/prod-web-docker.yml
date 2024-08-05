@@ -1,0 +1,104 @@
+name: Java CI with Ant
+
+on:
+  workflow_dispatch:
+    inputs:
+      runDeploy:
+        type: string
+        required: true
+      IMAGE_TAG:
+        type: string
+        required: false
+
+run-name: Triggered by Jenkins / ${{ github.sha }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:                # Job-level permissions configuration starts here
+      contents: write           # 'write' access to repository contents  
+
+    steps:
+    - uses: oprypin/find-latest-tag@v1
+      with:
+        repository: meatbox-git/meatbox-admin  # The repository to scan.
+        releases-only: true  # We know that all relevant tags have a GitHub release for them.
+        token: ${{ secrets.ACCESS_TOKEN }}
+      id: tag_name  # The step ID to refer to later.
+
+    - name: Transform Tag
+      run: |
+        TAG=${{ steps.tag_name.outputs.tag }}
+        IMAGE_TAG=${TAG//\//_}  # 슬래시를 언더스코어로 대체
+        echo "Transformed tag is: $IMAGE_TAG"
+        echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV  # 환경 변수로 설정
+        
+    - run: echo "Image Tag is ${{ env.IMAGE_TAG }}"
+    
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        path: docker
+        
+    - name: Checkout other repository
+      uses: actions/checkout@v3
+      with:
+        repository: meatbox-git/meatbox-admin
+        path: docs
+        token: ${{ secrets.ACCESS_TOKEN }}
+        ref: 'master'
+
+    # nexus Login
+    - name: Login to Nexus Docker Registry
+      uses: docker/login-action@v2
+      with:
+        registry: ${{ secrets.NEXUS_REGISTRY }}
+        username: ${{ secrets.NEXUS_USERNAME }}
+        password: ${{ secrets.NEXUS_PASSWORD }}
+
+    # 슬랙 알림 비 활성화
+    # - name: slack alert off
+    #   run : cp -r ${{ secrets.DOCKER_PATH }}/deploy/MeatboxApplicationRunner.java ${{ secrets.DOCS_PATH }}/java/kr/gbnet/common/listener/MeatboxApplicationRunner.java
+        
+    # 라이브러리 버전 교체
+    - name: library change
+      run: |
+        cp -rp ${{ secrets.DOCKER_PATH }}/lib/icu4j-50.1.1.jar ${{ secrets.DOCS_PATH }}/webapp/WEB-INF/lib/icu4j-50.1.1.jar
+        rm -rf ${{ secrets.DOCS_PATH }}/webapp/WEB-INF/lib/icu4j-4.0.1.jar
+
+    # Docker Build에 필요한 파일을 DEPLOY 경로로 이동
+    - name: move deploy file
+      run: |
+        cp -rp ${{ secrets.DOCKER_PATH }}/deploy/tomcat docs/tomcat
+        cp -rp ${{ secrets.DOCKER_PATH }}/deploy/build.xml docs/build.xml
+        cp -rp ${{ secrets.DOCKER_PATH }}/deploy/Dockerfile-docs docs/Dockerfile-docs
+        cp -rp ${{ secrets.DOCKER_PATH }}/deploy/.dockerignore docs/.dockerignore
+        cp -rp ${{ secrets.DOCKER_PATH }}/deploy/const\(RELEASE-DOCKER\).xml ${{ secrets.DOCS_PATH }}/resources/properties
+        cp -rp ${{ secrets.DOCKER_PATH }}/deploy/managerview.png ${{ secrets.DOCS_PATH }}/webapp/img/demo/managerview.png
+        sed -i 's|\${catalina.home}/logs|&/${HOSTNAME}|g' ${{ secrets.DOCS_PATH }}/properties/prod/logback.xml
+
+    #  swarmpit 사용을 위한 의도적으로 파일 추가하여 docker image layer 변경점 추가
+    - name: container layer change
+      run: |
+        echo "배포날짜: $(TZ='Asia/Seoul' date +"%Y-%m-%d %H:%M:%S.%3N")" > ${{ secrets.DOCS_PATH }}/resources/properties/deploy-date.txt
+
+    # Ant 빌드
+    - name: ant build
+      run: ant -f docs/build.xml dist
+
+    # DOCS 앱 이미지 빌드
+    - name: app image build
+      run: docker build -t ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/docs:${{ env.IMAGE_TAG }} -f docs/Dockerfile-docs .
+
+    # 이미지 태깅 & Push
+    - name: image Tag and Push
+      run: |
+        docker tag ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/docs:${{ env.IMAGE_TAG }} ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/docs:latest
+        docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/docs:${{ env.IMAGE_TAG }}
+        docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/docs:latest 
+ 
+# NEXUS_PASSWORD=
+# NEXUS_REGISTRY=nexus.meatbox.co.kr:5001
+# NEXUS_USERNAME=admin
+# DOCKER_PATH=docker/docs
+# DOCS_PATH=docs/src/main
