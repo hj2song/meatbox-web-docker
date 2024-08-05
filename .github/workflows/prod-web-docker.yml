@@ -92,6 +92,7 @@ jobs:
         context: .
         file: web/Dockerfile-web  # 사용할 Dockerfile
         push: false  # 이미지 푸시 여부
+        load: true
         tags: |
           ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }}
           ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
