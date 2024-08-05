@@ -82,27 +82,27 @@ jobs:
       run: ant -f web/build.xml dist
 
     # WEB 앱 이미지 빌드
-    # - name: app image build
-    #   run: docker build -t ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }} -f web/Dockerfile-web .
+    - name: app image build
+      run: docker build -t ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }} -f web/Dockerfile-web .
 
     # 이미지 태깅 & Push
-    # - name: image Tag and Push
-    #   run: |
-    #     docker tag ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }} ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
-    #     docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }}
-    #     docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest 
+    - name: image Tag and Push
+      run: |
+        docker tag ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }} ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
+        docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }}
+        docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest 
     # WEB 앱 이미지 빌드 및 푸시
-    - name: Build and push
-      uses: docker/build-push-action@v6
-      with:
-        context: .
-        file: web/Dockerfile-web  # 사용할 Dockerfile
-        push: true  # 이미지 푸시 여부
-        tags: |
-          ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }}
-          ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
-        cache-from: type=gha # gha 는 Guthub Actions 용 캐시를 의미
-        cache-to: type=gha,mode=max
+    # - name: Build and push
+    #   uses: docker/build-push-action@v6
+    #   with:
+    #     context: .
+    #     file: web/Dockerfile-web  # 사용할 Dockerfile
+    #     push: true  # 이미지 푸시 여부
+    #     tags: |
+    #       ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }}
+    #       ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
+    #     cache-from: type=gha # gha 는 Guthub Actions 용 캐시를 의미
+    #     cache-to: type=gha,mode=max
 
 # NEXUS_PASSWORD=
 # NEXUS_REGISTRY=nexus.meatbox.co.kr:5001
