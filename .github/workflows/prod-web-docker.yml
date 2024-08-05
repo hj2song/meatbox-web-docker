@@ -74,11 +74,11 @@ jobs:
 
     # Ant 빌드
     - name: ant build
-      run: ant -f docs/build.xml dist
+      run: ant -f web/build.xml dist
 
-    # DOCS 앱 이미지 빌드
+    # WEB 앱 이미지 빌드
     - name: app image build
-      run: docker build -t ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }} -f docs/Dockerfile-web .
+      run: docker build -t ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }} -f web/Dockerfile-web .
 
     # 이미지 태깅 & Push
     - name: image Tag and Push
@@ -91,4 +91,4 @@ jobs:
 # NEXUS_REGISTRY=nexus.meatbox.co.kr:5001
 # NEXUS_USERNAME=admin
 # DOCKER_PATH=docker/web
-# WEB_PATH=docs/src/main
+# WEB_PATH=web/src/main
