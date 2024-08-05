@@ -1,5 +1,5 @@
 # Base Image
-FROM nexus.meatbox.co.kr/prod/base/meatbox-web:latest
+FROM nexus.meatbox.co.kr:5001/prod/base/meatbox-web:latest
 
 # 포트 설정
 EXPOSE 17100
