@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-ENV=prod
+ENV=dev
 IMAGE_REPO="nexus.meatbox.co.kr/${ENV}/meatbox"
 IMAGE_NAME="web"
 
