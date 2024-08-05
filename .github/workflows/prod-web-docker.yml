@@ -32,9 +32,9 @@ jobs:
         token: ${{ secrets.ACCESS_TOKEN }}
         ref: '${{ github.event.inputs.IMAGE_TAG }}'
     
-    # buildx 설정
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+    # # buildx 설정
+    # - name: Set up Docker Buildx
+    #   uses: docker/setup-buildx-action@v3
     
      # nexus Login
     - name: Login to Nexus Docker Registry
@@ -91,23 +91,19 @@ jobs:
       with:
         context: .
         file: web/Dockerfile-web  # 사용할 Dockerfile
-        push: false  # 이미지 푸시 여부를 true로 설정할 경우 swarmpit에서 이미지 인식 불가
-        load: true
+        push: true  
         platforms: linux/amd64
         tags: |
           ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }}
           ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
-        cache-from: type=gha # gha 는 Guthub Actions 용 캐시를 의미
-        cache-to: type=gha,mode=max
-        
-    - name: List Docker images
-      run: docker images
-    # 이미지 태깅 & Push
-    - name: image Tag and Push
-      run: |
-        docker tag ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }} ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
-        docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }}
-        docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
+        # cache-from: type=gha # gha 는 Guthub Actions 용 캐시를 의미
+        # cache-to: type=gha,mode=max
+    # # 이미지 태깅 & Push
+    # - name: image Tag and Push
+    #   run: |
+    #     docker tag ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }} ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
+    #     docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }}
+    #     docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
 
 
 # NEXUS_PASSWORD=
