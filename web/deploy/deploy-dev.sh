@@ -61,7 +61,7 @@ sed -i 's|\${sys:catalina.home}/logs|\${sys:catalina.home}/logs/\${sys:HOSTNAME}
 # Docker Build에 필요한 파일을 DEPLOY 경로로 이동
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/tomcat-dev ${DEPLOY_PATH}/tomcat || exit
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/build-local-dev.xml ${DEPLOY_PATH}/build.xml || exit
-cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/Dockerfile-${APP_NAME}-local ${DEPLOY_PATH}/Dockerfile-${APP_NAME}-local || exit
+cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/Dockerfile-${APP_NAME}-local-${ENV} ${DEPLOY_PATH}/Dockerfile-${APP_NAME}-local || exit
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/.dockerignore ${DEPLOY_PATH}/.dockerignore || exit
 
 # 도메인 변경
