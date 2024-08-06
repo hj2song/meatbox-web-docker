@@ -9,7 +9,7 @@ RUN chmod u+x $CATALINA_HOME/bin/catalina.sh \
     # 이미지 서버 마운트 경로 생성
     && mkdir -p /home/DATA/www-deploy/meatbox-web2/src/main/webapp/m /home/DATA/www-deploy/meatbox-web2/src/main/webapp/web \
     # 디렉토리 소유권 설정
-    && chown www:www -R /home/DATA/ /usr/lib/jvm
+    && chown www:www -R /home/DATA/ /usr/lib/jvm /usr/local/tomcat/
 
 # 사용자 변경
 USER www
