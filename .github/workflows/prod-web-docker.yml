@@ -1,4 +1,4 @@
-name: Java CI with Ant
+name: Deploy of Meatbox-web docker image
 
 on:
   workflow_dispatch:
