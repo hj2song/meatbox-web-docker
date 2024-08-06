@@ -84,6 +84,7 @@ jobs:
     # Image Push
     - name: Image Push
       run: |
+        docker tag ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }} ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
         docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:${{ env.IMAGE_TAG }}
         docker push ${{ secrets.NEXUS_REGISTRY }}/prod/meatbox/web:latest
 
