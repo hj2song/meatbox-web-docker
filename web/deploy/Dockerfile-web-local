@@ -20,6 +20,7 @@ COPY --chown=www tomcat/bin/. $CATALINA_HOME/bin/
 
 # 애플리케이션 배포
 COPY --chown=www src/main/webapp/. /home/DATA/www-deploy/meatbox-web2/src/main/webapp/
+COPY --chown=www src/main/template/. /home/DATA/www-deploy/meatbox-web2/src/main/template/
 
 # Tomcat 서버 실행
 ENTRYPOINT ["sh", "-c", "entry.sh"]
