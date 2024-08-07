@@ -70,8 +70,8 @@ jobs:
         echo "배포날짜: $(TZ='Asia/Seoul' date +"%Y-%m-%d %H:%M:%S.%3N")" > ${{ secrets.WEB_PATH }}/resources/properties/deploy-date.txt
 
     # Minify 실행
-    - name: Run Minify
-      run: ant -f web/build-minify.xml minify
+    # - name: Run Minify
+    #   run: ant -f web/build-minify.xml minify
 
     # Ant 빌드
     - name: ant build

@@ -68,7 +68,7 @@ cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/.dockerignore-local ${DEPLOY_PATH}/.doc
 find ${DEPLOY_PATH} -type f -exec sed -i 's/www\.meatbox\.co\.kr/www5\.meatbox\.co\.kr/g' {} +
 
 # minify 실행
-ant -f ${DEPLOY_PATH}/build-minify.xml minify || exit
+# ant -f ${DEPLOY_PATH}/build-minify.xml minify || exit
 
 # Ant 빌드
 ant -f ${DEPLOY_PATH}/build.xml dist || exit

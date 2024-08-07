@@ -6,10 +6,10 @@
 	<property name="dir.lib"			value="${basedir}/10. reference/lib" />
 
 	<!-- js 디렉토리 -->
-	<!-- <property name="dir.js"				value="${basedir}/src/main/webapp/js" /> -->
+	<property name="dir.js"				value="${basedir}/src/main/webapp/js" />
 
 	<!-- css 디렉토리 -->
-	<!-- <property name="dir.css"			value="${basedir}/src/main/webapp/css" /> -->
+	<property name="dir.css"			value="${basedir}/src/main/webapp/css" />
 
 	
 	<target name="minify" description="js, css minify" depends="minify.css, minify.js" />

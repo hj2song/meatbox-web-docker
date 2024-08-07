@@ -71,7 +71,7 @@ echo "dev-www2 를 www5로 변경..."
 find ${DEPLOY_PATH} -type f -exec sed -i 's/dev-www2\.meatbox\.co\.kr/www5\.meatbox\.co\.kr/g' {} +
 
 # minify 실행
-ant -f ${DEPLOY_PATH}/build-minify.xml minify || exit
+# ant -f ${DEPLOY_PATH}/build-minify.xml minify || exit
 
 # Ant 빌드
 ant -f ${DEPLOY_PATH}/build.xml dist || exit
