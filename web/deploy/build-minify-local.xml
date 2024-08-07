@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE project>
-<project name="미트박스2.0" basedir="/home/super/docker/meatbox-web-dev" default="minify">
+<project name="미트박스2.0" basedir="/home/super/docker/meatbox-web-prod" default="minify">
 
 	<!-- 라이브러리 디렉토리 -->
 	<property name="dir.lib"			value="${basedir}/10. reference/lib" />
