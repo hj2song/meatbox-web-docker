@@ -47,7 +47,6 @@ cp -rp ${SOURCE_PATH}/* ${DEPLOY_PATH}/ || exit
 
 # 라이브러리 버전 교체
 cp -r  ${DOCKER_PATH}/${APP_NAME}/lib/icu4j-50.1.1.jar ${LIBRARY_PATH}/icu4j-50.1.1.jar || exit
-rm -rf ${LIBRARY_PATH}/icu4j-4.0.1.jar
 
 # 슬랙 알림 비 활성화
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/MeatboxApplicationRunner.java ${DEPLOY_PATH}/src/main/java/kr/gbnet/common/listener/MeatboxApplicationRunner.java || exit

@@ -47,7 +47,6 @@ cp -rp ${SOURCE_PATH}/* ${DEPLOY_PATH}/ || exit
 
 # 라이브러리 버전 교체
 cp -r  ${DOCKER_PATH}/${APP_NAME}/lib/icu4j-50.1.1.jar ${LIBRARY_PATH}/icu4j-50.1.1.jar || exit
-rm -rf ${LIBRARY_PATH}/icu4j-4.0.1.jar
 
 # 슬랙 알림 비 활성화
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/MeatboxApplicationRunner.java ${DEPLOY_PATH}/src/main/java/kr/gbnet/common/listener/MeatboxApplicationRunner.java || exit
@@ -63,7 +62,7 @@ cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/tomcat-dev ${DEPLOY_PATH}/tomcat-dev ||
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/build-local-dev.xml ${DEPLOY_PATH}/build.xml || exit
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/build-minify-local-dev.xml ${DEPLOY_PATH}/build-minify.xml || exit
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/Dockerfile-${APP_NAME}-local-${ENV} ${DEPLOY_PATH}/Dockerfile-${APP_NAME}-local || exit
-cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/.dockerignore-local ${DEPLOY_PATH}/.dockerignore || exit
+cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/.dockerignore-dev-local ${DEPLOY_PATH}/.dockerignore || exit
 
 # 도메인 변경
 echo "www 를 www5로 변경..."
