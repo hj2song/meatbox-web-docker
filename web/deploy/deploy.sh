@@ -63,7 +63,7 @@ cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/tomcat ${DEPLOY_PATH}/tomcat || exit
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/build-local.xml ${DEPLOY_PATH}/build.xml || exit
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/build-minify-local.xml ${DEPLOY_PATH}/build-minify.xml || exit
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/Dockerfile-${APP_NAME}-local ${DEPLOY_PATH}/Dockerfile-${APP_NAME}-local || exit
-cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/.dockerignore ${DEPLOY_PATH}/.dockerignore || exit
+cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/.dockerignore-local ${DEPLOY_PATH}/.dockerignore || exit
 
 # 도메인 변경
 find ${DEPLOY_PATH} -type f -exec sed -i 's/www\.meatbox\.co\.kr/www5\.meatbox\.co\.kr/g' {} +
