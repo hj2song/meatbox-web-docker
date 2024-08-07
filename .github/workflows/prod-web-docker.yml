@@ -51,16 +51,11 @@ jobs:
     # 슬랙 알림 비 활성화
     - name: slack alert off
       run : cp -r ${{ secrets.DOCKER_PATH }}/deploy/MeatboxApplicationRunner.java ${{ secrets.WEB_PATH }}/java/kr/gbnet/common/listener/MeatboxApplicationRunner.java
-        
-    # 라이브러리 버전 교체
-    - name: library change
-      run: |
-        cp -rp ${{ secrets.DOCKER_PATH }}/lib/icu4j-50.1.1.jar ${{ secrets.WEB_PATH }}/webapp/WEB-INF/lib/icu4j-50.1.1.jar
-        rm -rf ${{ secrets.WEB_PATH }}/webapp/WEB-INF/lib/icu4j-4.0.1.jar
 
     # Docker Build에 필요한 파일을 DEPLOY 경로로 이동
     - name: move deploy file
       run: |
+        cp -rp ${{ secrets.DOCKER_PATH }}/lib/icu4j-50.1.1.jar ${{ secrets.WEB_PATH }}/webapp/WEB-INF/lib/icu4j-50.1.1.jar
         cp -rp ${{ secrets.DOCKER_PATH }}/deploy/tomcat web/tomcat
         cp -rp ${{ secrets.DOCKER_PATH }}/deploy/build-minify.xml web/build-minify.xml
         cp -rp ${{ secrets.DOCKER_PATH }}/deploy/build.xml web/build.xml

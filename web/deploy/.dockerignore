@@ -3,3 +3,5 @@ web/src/main/webapp/index.jsp
 web/src/main/webapp/index(FO).jsp
 web/src/main/webapp/index(MO).jsp
 web/src/main/webapp/index(BO).jsp
+web/src/main/webapp/WEB-INF/lib/icu4j-4.0.1.jar
+**/.gitignore
