@@ -46,7 +46,6 @@ jobs:
         TAG=${{ github.event.inputs.IMAGE_TAG }}
         IMAGE_TAG=${TAG//\//_}  # 슬래시를 언더스코어로 대체
         echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV  # 환경 변수로 설정
-        echo "Image Tag is ${{ env.IMAGE_TAG }}"
     
     # 슬랙 알림 비 활성화
     - name: slack alert off
