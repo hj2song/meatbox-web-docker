@@ -66,7 +66,9 @@ cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/Dockerfile-${APP_NAME}-local-${ENV} ${D
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/.dockerignore ${DEPLOY_PATH}/.dockerignore || exit
 
 # 도메인 변경
+echo "www 를 www5로 변경..."
 find ${DEPLOY_PATH} -type f -exec sed -i 's/www\.meatbox\.co\.kr/www5\.meatbox\.co\.kr/g' {} +
+echo "dev-www2 를 www5로 변경..."
 find ${DEPLOY_PATH} -type f -exec sed -i 's/dev-www2\.meatbox\.co\.kr/www5\.meatbox\.co\.kr/g' {} +
 
 # minify 실행
