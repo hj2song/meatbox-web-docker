@@ -1,5 +1,5 @@
-src/main/webapp/img
-src/main/webapp/index.jsp
-src/main/webapp/index(FO).jsp
-src/main/webapp/index(MO).jsp
-src/main/webapp/index(BO).jsp
+web/src/main/webapp/img
+web/src/main/webapp/index.jsp
+web/src/main/webapp/index(FO).jsp
+web/src/main/webapp/index(MO).jsp
+web/src/main/webapp/index(BO).jsp

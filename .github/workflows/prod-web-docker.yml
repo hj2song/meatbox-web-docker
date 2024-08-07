@@ -57,7 +57,6 @@ jobs:
       run: |
         cp -rp ${{ secrets.DOCKER_PATH }}/lib/icu4j-50.1.1.jar ${{ secrets.WEB_PATH }}/webapp/WEB-INF/lib/icu4j-50.1.1.jar
         rm -rf ${{ secrets.WEB_PATH }}/webapp/WEB-INF/lib/icu4j-4.0.1.jar
-        rm -rf ${{ secrets.WEB_PATH }}/webapp/img
 
     # Docker Build에 필요한 파일을 DEPLOY 경로로 이동
     - name: move deploy file
@@ -66,8 +65,7 @@ jobs:
         cp -rp ${{ secrets.DOCKER_PATH }}/deploy/build-minify.xml web/build-minify.xml
         cp -rp ${{ secrets.DOCKER_PATH }}/deploy/build.xml web/build.xml
         cp -rp ${{ secrets.DOCKER_PATH }}/deploy/Dockerfile-web web/Dockerfile-web
-        cp -rp ${{ secrets.DOCKER_PATH }}/deploy/.dockerignore web/.dockerignore
-        pwd
+        cp -rp ${{ secrets.DOCKER_PATH }}/deploy/.dockerignore /home/runner/work/meatbox-web-docker/meatbox-web-docker/.dockerignore
         sed -i 's|\${sys:catalina.home}/logs|\${sys:catalina.home}/logs/\${sys:HOSTNAME}|g' web/src/main/resources/log4j/log4j-web\(RELEASE\).xml
         # find ${DEPLOY_PATH} -type f -exec sed -i 's/www\.meatbox\.co\.kr/www5\.meatbox\.co\.kr/g' {} +
 
