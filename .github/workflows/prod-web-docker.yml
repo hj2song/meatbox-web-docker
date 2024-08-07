@@ -62,6 +62,7 @@ jobs:
     - name: move deploy file
       run: |
         cp -rp ${{ secrets.DOCKER_PATH }}/deploy/tomcat web/tomcat
+        cp -rp ${{ secrets.DOCKER_PATH }}/deploy/build-minify.xml web/build-minify.xml
         cp -rp ${{ secrets.DOCKER_PATH }}/deploy/build.xml web/build.xml
         cp -rp ${{ secrets.DOCKER_PATH }}/deploy/Dockerfile-web web/Dockerfile-web
         cp -rp ${{ secrets.DOCKER_PATH }}/deploy/.dockerignore web/.dockerignore
@@ -72,6 +73,10 @@ jobs:
     - name: container layer change
       run: |
         echo "배포날짜: $(TZ='Asia/Seoul' date +"%Y-%m-%d %H:%M:%S.%3N")" > ${{ secrets.WEB_PATH }}/resources/properties/deploy-date.txt
+
+    # Minify 실행
+    - name: Run Minify
+      run: ant -f web/build-minify.xml minify
 
     # Ant 빌드
     - name: ant build
