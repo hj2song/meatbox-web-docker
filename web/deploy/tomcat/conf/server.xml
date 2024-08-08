@@ -138,7 +138,7 @@
          APR (HTTP/AJP) Connector: /docs/apr.html
          Define a non-SSL/TLS HTTP/1.1 Connector on port 8080
     -->
-    <Connector port="17100" protocol="HTTP/1.1"
+    <Connector port="16100" protocol="HTTP/1.1"
                connectionTimeout="20000"
                minSpareThreads="25"
                maxThreads="100"
