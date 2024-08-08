@@ -55,7 +55,7 @@ services:
         target: /home/DATA/www-deploy/meatbox-web2/src/main/webapp/WEB-INF/classes/properties/MeatboxSecretKey.properties
     #entrypoint: ["sh", "-c", "entry.sh"]
     healthcheck:
-      test: ["CMD", "sh", "-c", "netstat -an | grep 17100 > /dev/null; if [ 0 != $$? ]; then exit 1; fi;"]
+      test: ["CMD", "sh", "${CATALINA_HOME}/bin/health_check.sh", "17100"]
       interval: 30s
       timeout: 10s
       retries: 3
