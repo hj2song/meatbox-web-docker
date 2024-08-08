@@ -23,7 +23,7 @@ services:
       labels:
         - app=meatbox-web
         - env=dev
-        - swarmpit.service.deployment.autoredeploy=true
+        - swarmpit.service.deployment.autoredeploy=false
       resources:
         limits:
           cpus: "2"
