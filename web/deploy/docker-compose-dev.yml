@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   meatbox:
-    image: ${IMAGE_FULL_NAME}
+    image: nexus.meatbox.co.kr/dev/meatbox/web:latest
     hostname: '{{.Service.Name}}-{{.Task.Slot}}'
     environment:
       NODE_HOSTNAME: '{{.Node.Hostname}}'
