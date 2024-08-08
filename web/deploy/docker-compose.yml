@@ -15,7 +15,7 @@ services:
         mode: ingress
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 2
       placement:
         constraints: [node.role == worker]
         preferences:
@@ -23,7 +23,7 @@ services:
       labels:
         - app=meatbox-web
         - env=prod
-        - swarmpit.service.deployment.autoredeploy=true
+        - swarmpit.service.deployment.autoredeploy=false
       resources:
         limits:
           cpus: "2"
