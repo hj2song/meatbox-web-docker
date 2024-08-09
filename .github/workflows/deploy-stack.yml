@@ -1,0 +1,16 @@
+name: Deploy docker stack
+
+on:
+  push:
+    paths:
+      - 'web/deploy/docker-compose.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    # Stack Deployment
+    - name: Deploy Stack
+      run: |
+        echo | openssl s_client -showcerts -servername portainer.meatbox.co.kr -connect portainer.meatbox.co.kr:443 2>/dev/null | openssl x509 -outform PEM > portainer-cert.pem
+        curl -X POST https://portainer.meatbox.co.kr/api/stacks/webhooks/2c897ce3-c143-4599-bb0e-1cdacb50d138 --cacert portainer-cert.pem
