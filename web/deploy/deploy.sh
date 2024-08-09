@@ -52,7 +52,7 @@ cp -r  ${DOCKER_PATH}/${APP_NAME}/lib/icu4j-50.1.1.jar ${LIBRARY_PATH}/icu4j-50.
 cp -rp ${DOCKER_PATH}/${APP_NAME}/deploy/MeatboxApplicationRunner.java ${DEPLOY_PATH}/src/main/java/kr/gbnet/common/listener/MeatboxApplicationRunner.java || exit
 
 # swarmpit 사용을 위한 의도적으로 파일 추가하여 docker image layer 변경점 추가
-echo "배포날짜: $(TZ='Asia/Seoul' date +"%Y-%m-%d %H:%M:%S.%3N")" > ${RESOURCE_PATH}/deploy-date.txt
+echo "배포날짜: $(TZ='Asia/Seoul' date +"%Y-%m-%d %H:%M:%S.%3N")" > ${DEPLOY_PATH}/src/main/deploy-date.txt
 
 # 설정 파일 교체
 sed -i 's|\${sys:catalina.home}/logs|\${sys:catalina.home}/logs/\${sys:HOSTNAME}|g' ${LOG4J_PATH}/log4j-web\(RELEASE\).xml || exit

@@ -7,7 +7,7 @@ EXPOSE 17100
 # 권한 설정
 RUN chmod u+x $CATALINA_HOME/bin/catalina.sh \
     # 이미지 서버 마운트 경로 생성
-    && mkdir -p /home/DATA/www-deploy/meatbox-web2/src/main/webapp/m /home/DATA/www-deploy/meatbox-web2/src/main/webapp/web \
+    && mkdir -p /home/DATA/www-deploy/meatbox-web2/src/main \
     # 디렉토리 소유권 설정
     && chown www:www -R /home/DATA/ /usr/local/tomcat/ /usr/lib/jvm
 
@@ -19,9 +19,7 @@ COPY --chown=www tomcat-dev/conf/. $CATALINA_HOME/conf/
 COPY --chown=www tomcat-dev/bin/. $CATALINA_HOME/bin/
 
 # 애플리케이션 배포
-#COPY --chown=www ["30. 어플/.", "/home/DATA/www-deploy/meatbox-web2/src/main/webapp/"]
-COPY --chown=www src/main/webapp/. /home/DATA/www-deploy/meatbox-web2/src/main/webapp/
-COPY --chown=www src/main/template/. /home/DATA/www-deploy/meatbox-web2/src/main/template/
+COPY --chown=www src/main/. /home/DATA/www-deploy/meatbox-web2/src/main/
 
 # Tomcat 서버 실행
 ENTRYPOINT ["sh", "-c", "entry.sh"]

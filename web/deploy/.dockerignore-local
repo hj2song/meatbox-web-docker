@@ -2,5 +2,7 @@ src/main/webapp/img
 src/main/webapp/font
 src/main/webapp/css
 src/main/webapp/js
+src/main/java
+src/main/resources
 src/main/webapp/WEB-INF/lib/icu4j-4.0.1.jar
 **/.gitignore

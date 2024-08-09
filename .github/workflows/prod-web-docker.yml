@@ -58,7 +58,7 @@ jobs:
     #  swarmpit 사용을 위한 의도적으로 파일 추가하여 docker image layer 변경점 추가
     - name: container layer change
       run: |
-        echo "배포날짜: $(TZ='Asia/Seoul' date +"%Y-%m-%d %H:%M:%S.%3N")" > ${{ secrets.WEB_PATH }}/resources/properties/deploy-date.txt
+        echo "배포날짜: $(TZ='Asia/Seoul' date +"%Y-%m-%d %H:%M:%S.%3N")" > ${{ secrets.WEB_PATH }}/deploy-date.txt
 
     # Minify 실행
     # - name: Run Minify
@@ -92,7 +92,7 @@ jobs:
       uses: docker/setup-buildx-action@v3
 
     # WEB 앱 이미지 빌드 및 푸시
-    - name: Build and Load
+    - name: Build and Push
       uses: docker/build-push-action@v6
       with:
         context: .
